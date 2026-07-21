@@ -744,6 +744,48 @@
             background: var(--accent-hover);
             box-shadow: 0 8px 20px var(--accent-glow);
         }
+
+        /* ===== BACK TO TOP BUTTON ===== */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
+            transition: all var(--transition);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+        }
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .back-to-top:hover {
+            background: var(--accent-hover);
+            box-shadow: 0 6px 25px rgba(56, 189, 248, 0.55);
+            transform: translateY(-4px);
+        }
+        [data-theme="dark"] .back-to-top {
+            background: var(--accent);
+            color: #0f172a;
+        }
+        [data-theme="dark"] .back-to-top:hover {
+            background: var(--accent-hover);
+        }
+
         .footer {
             text-align: center;
             padding: 32px 24px;
@@ -751,6 +793,7 @@
             color: var(--text-muted);
             font-size: 0.85rem;
         }
+
         @media (max-width: 900px) {
             .about-grid,
             .contact-wrapper {
@@ -758,6 +801,13 @@
             }
             .projects-grid {
                 grid-template-columns: 1fr;
+            }
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 44px;
+                height: 44px;
+                font-size: 1.1rem;
             }
         }
         @media (max-width: 768px) {
@@ -857,17 +907,14 @@
                 <div class="about-text">
                     <h3>Turning data into decisions</h3>
                     <p>
-                        <!-- EDIT THIS PARAGRAPH WITH YOUR OWN BIO -->
                         I am a passionate AI/ML Engineer dedicated to building intelligent, scalable solutions.
                         With a strong foundation in deep learning, natural language processing, and computer vision,
-                        I help organizations unlock the value hidden in their data. I enjoy the entire ML lifecycle,
-                        from exploratory analysis and model prototyping to production deployment and monitoring.
+                        I help organizations unlock the value hidden in their data.
                     </p>
                     <p>
-                        <!-- EDIT THIS PARAGRAPH TOO -->
                         When I'm not experimenting with transformers or fine‑tuning models, you can find me
                         contributing to open‑source projects, writing technical blogs, or exploring the latest
-                        research papers. I believe in continuous learning and the power of AI to make a positive impact.
+                        research papers.
                     </p>
                     <div class="about-stats">
                         <div class="stat-item"><h4>3+</h4><span>Years Exp.</span></div>
@@ -887,7 +934,6 @@
                 <div class="section-line"></div>
             </div>
             <div class="skills-grid">
-                <!-- EDIT THESE SKILL CARDS WITH YOUR OWN -->
                 <div class="skill-card"><i class="fa-brands fa-python"></i><h4>Python</h4></div>
                 <div class="skill-card"><i class="fa-solid fa-chart-simple"></i><h4>TensorFlow</h4></div>
                 <div class="skill-card"><i class="fa-solid fa-fire"></i><h4>PyTorch</h4></div>
@@ -912,7 +958,6 @@
                 <div class="section-line"></div>
             </div>
             <div class="projects-grid">
-                <!-- PROJECT 1 – EDIT WITH YOUR OWN -->
                 <article class="project-card">
                     <div class="project-image"><i class="fa-solid fa-comment-dots"></i></div>
                     <div class="project-body">
@@ -927,7 +972,6 @@
                         </div>
                     </div>
                 </article>
-                <!-- PROJECT 2 -->
                 <article class="project-card">
                     <div class="project-image"><i class="fa-solid fa-image"></i></div>
                     <div class="project-body">
@@ -942,7 +986,6 @@
                         </div>
                     </div>
                 </article>
-                <!-- PROJECT 3 -->
                 <article class="project-card">
                     <div class="project-image"><i class="fa-solid fa-robot"></i></div>
                     <div class="project-body">
@@ -969,7 +1012,6 @@
                 <div class="section-line"></div>
             </div>
             <div class="testimonials-grid">
-                <!-- EDIT TESTIMONIALS WITH YOUR OWN -->
                 <div class="testimonial-card">
                     <div class="quote-icon"><i class="fa-solid fa-quote-right"></i></div>
                     <p>"Surdeep's ML models gave us a 30% boost in prediction accuracy. His work is rigorous and production‑ready."</p>
@@ -1012,7 +1054,6 @@
                     <div class="contact-detail">
                         <i class="fa-solid fa-envelope"></i> surdeep@example.com
                     </div>
-                    <!-- ADD YOUR OWN SOCIAL LINKS (edit the href attributes) -->
                     <div class="social-links">
                         <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
                         <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
@@ -1039,8 +1080,13 @@
         </div>
     </section>
 
+    <!-- Back to Top Button (floating) -->
+    <button class="back-to-top" id="backToTopBtn" aria-label="Back to top" title="Back to top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
     <footer class="footer">
-        <p>&copy; <span id="currentYear"></span> Surdeep Kashyap Panda. Built with ❤️ and ☕. <a href="#home">Back to top ↑</a></p>
+        <p>&copy; <span id="currentYear"></span> Surdeep Kashyap Panda. Built with ❤️ and ☕.</p>
     </footer>
 
     <script>
@@ -1053,10 +1099,11 @@
             const currentYearSpan = document.getElementById('currentYear');
             const allNavLinks = document.querySelectorAll('.nav-links a');
             const html = document.documentElement;
+            const backToTopBtn = document.getElementById('backToTopBtn');
 
             if (currentYearSpan) currentYearSpan.textContent = new Date().getFullYear();
 
-            // Set default theme to light (but respect saved preference)
+            // Theme management
             const savedTheme = localStorage.getItem('theme') || 'light';
             html.setAttribute('data-theme', savedTheme);
             updateThemeIcon(savedTheme);
@@ -1074,6 +1121,7 @@
                 icon.className = theme === 'light' ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
             }
 
+            // Mobile menu
             hamburger.addEventListener('click', () => {
                 const isOpen = navLinks.classList.toggle('open');
                 hamburger.classList.toggle('active');
@@ -1090,9 +1138,25 @@
                 });
             });
 
+            // Navbar shadow on scroll & back-to-top button visibility
             window.addEventListener('scroll', () => {
-                if (window.scrollY > 30) navbar.classList.add('scrolled');
-                else navbar.classList.remove('scrolled');
+                if (window.scrollY > 30) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+
+                // Show/hide back-to-top button
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            // Back to top click
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             });
 
             // Active nav link observer
@@ -1110,6 +1174,7 @@
             }, { rootMargin: '-40% 0px -55% 0px' });
             sections.forEach(section => observer.observe(section));
 
+            // Contact form
             contactForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 const formData = new FormData(contactForm);
