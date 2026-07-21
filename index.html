@@ -14,6 +14,13 @@
     <meta property="og:description" content="Crafting intelligent solutions with machine learning and deep learning.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://surdeep.dev">
+    <!--
+      #7 - OPEN GRAPH IMAGE
+      To make your link stand out when shared on social media,
+      create a 1200x630 px image with your name, title, and a gradient background.
+      Then replace the placeholder URL below.
+      Example: <meta property="og:image" content="https://surdeep.dev/og-image.jpg">
+      -->
     <meta property="og:image" content="https://surdeep.dev/og-image.jpg">
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
@@ -56,6 +63,7 @@
             --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
             --max-width: 1200px;
             --nav-height: 70px;
+            --progress-size: 48px;
         }
 
         [data-theme="dark"] {
@@ -93,6 +101,13 @@
             transition: background-color var(--transition), color var(--transition);
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+        }
+
+        /* #9 Accessibility: global focus style */
+        :focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 3px;
+            border-radius: 4px;
         }
 
         /* ===== FADE-IN ANIMATION (scroll triggered) ===== */
@@ -230,7 +245,7 @@
             transform: rotate(-45deg) translate(5px, -5px);
         }
 
-        /* Hero (already animated with keyframes, so we don't add fade-in-section class) */
+        /* Hero */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -345,12 +360,32 @@
             margin: 0 auto 32px;
             animation: fadeInUp 0.6s ease-out 0.2s both;
         }
+        /* #6 Typing effect */
+        .typing-container {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--accent);
+            margin-bottom: 24px;
+            animation: fadeInUp 0.6s ease-out 0.15s both;
+            height: 2rem;
+        }
+        .typing-text::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
+            margin-left: 2px;
+            font-weight: 300;
+        }
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
         .hero-buttons {
             display: flex;
             gap: 16px;
             justify-content: center;
             flex-wrap: wrap;
-            animation: fadeInUp 0.6s ease-out 0.3s both;
+            animation: fadeInUp 0.6s ease-out 0.25s both;
         }
         .btn {
             display: inline-flex;
@@ -421,6 +456,49 @@
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        /* #8 Currently Working On */
+        .currently-section {
+            padding: 0 24px 30px;
+        }
+        .currently-card {
+            max-width: 500px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: var(--shadow-sm);
+        }
+        .currently-card i {
+            font-size: 2rem;
+            color: var(--accent);
+        }
+        .currently-card .info {
+            flex: 1;
+        }
+        .currently-card .info strong {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+        .currently-card .info span {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        .badge-in-progress {
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--accent);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 12px;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
         }
 
         /* Sections */
@@ -743,7 +821,6 @@
             background: var(--accent-hover);
             box-shadow: 0 8px 20px var(--accent-glow);
         }
-        /* Form feedback messages */
         .form-feedback {
             margin-top: 16px;
             padding: 12px 16px;
@@ -775,40 +852,64 @@
             border-color: #7f1d1d;
         }
 
-        /* Back to top button */
-        .back-to-top {
+        /* #5 Scroll Progress Ring */
+        .progress-ring-container {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            width: 50px;
-            height: 50px;
+            width: var(--progress-size);
+            height: var(--progress-size);
+            z-index: 999;
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .progress-ring-container.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .progress-ring-container svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+        .progress-ring-bg {
+            fill: none;
+            stroke: var(--border);
+            stroke-width: 4;
+        }
+        .progress-ring-fill {
+            fill: none;
+            stroke: var(--accent);
+            stroke-width: 4;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.1s linear;
+        }
+        .progress-ring-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             background: var(--accent);
             color: #fff;
             border: none;
             border-radius: 50%;
-            font-size: 1.3rem;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
-            transition: all var(--transition);
-            z-index: 999;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(20px);
+            cursor: pointer;
+            pointer-events: auto;
+            font-size: 1rem;
+            transition: background var(--transition);
+            box-shadow: 0 2px 8px rgba(56, 189, 248, 0.3);
         }
-        .back-to-top.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-        .back-to-top:hover {
+        .progress-ring-btn:hover {
             background: var(--accent-hover);
-            box-shadow: 0 6px 25px rgba(56, 189, 248, 0.55);
-            transform: translateY(-4px);
         }
-        [data-theme="dark"] .back-to-top {
+        [data-theme="dark"] .progress-ring-btn {
             color: #0f172a;
         }
 
@@ -828,16 +929,13 @@
             .projects-grid {
                 grid-template-columns: 1fr;
             }
-            .back-to-top {
-                bottom: 20px;
-                right: 20px;
-                width: 44px;
-                height: 44px;
-                font-size: 1.1rem;
-            }
             .about-image {
                 width: 220px;
                 height: 220px;
+            }
+            .progress-ring-container {
+                bottom: 20px;
+                right: 20px;
             }
         }
         @media (max-width: 768px) {
@@ -878,6 +976,10 @@
             .testimonials-grid {
                 grid-template-columns: 1fr;
             }
+            .currently-card {
+                flex-direction: column;
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -888,13 +990,13 @@
                 <!-- REPLACE images/logo.png WITH YOUR LOGO FILE -->
                 <img src="logo.png" alt="SKP Logo" class="logo-img">
             </a>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#home" class="active">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#testimonials">Testimonials</a></li>
-                <li><a href="#contact" class="nav-cta">Let's Talk</a></li>
+            <ul class="nav-links" id="navLinks" role="menubar">
+                <li role="none"><a href="#home" role="menuitem" class="active">Home</a></li>
+                <li role="none"><a href="#about" role="menuitem">About</a></li>
+                <li role="none"><a href="#skills" role="menuitem">Skills</a></li>
+                <li role="none"><a href="#projects" role="menuitem">Projects</a></li>
+                <li role="none"><a href="#testimonials" role="menuitem">Testimonials</a></li>
+                <li role="none"><a href="#contact" role="menuitem" class="nav-cta">Let's Talk</a></li>
             </ul>
             <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light theme">
                 <i class="fa-solid fa-moon"></i>
@@ -914,6 +1016,10 @@
         <div class="hero-content">
             <span class="hero-badge"><i class="fa-solid fa-brain"></i> AI/ML Engineer</span>
             <h1>I'm <span class="highlight">Surdeep Kashyap Panda</span><br>Building Intelligent Systems</h1>
+            <!-- #6 Typing effect -->
+            <div class="typing-container">
+                <span class="typing-text" id="typingText"></span>
+            </div>
             <p class="subtitle">
                 I design and deploy machine learning models that solve real‑world problems.
                 From data to deployment, I turn complexity into clarity.
@@ -921,10 +1027,24 @@
             <div class="hero-buttons">
                 <a href="#projects" class="btn btn-primary"><i class="fa-solid fa-code"></i> View My Work</a>
                 <a href="#contact" class="btn btn-outline"><i class="fa-solid fa-paper-plane"></i> Get In Touch</a>
+                <!-- #4 Resume Download -->
+                <a href="resume.pdf" class="btn btn-outline" download><i class="fa-solid fa-download"></i> Resume</a>
             </div>
         </div>
         <div class="scroll-indicator"><span></span></div>
     </section>
+
+    <!-- #8 Currently Working On -->
+    <div class="currently-section fade-in-section">
+        <div class="currently-card">
+            <i class="fa-solid fa-flask"></i>
+            <div class="info">
+                <strong>Currently working on:</strong>
+                <span>Real‑time NLP pipeline for healthcare sentiment analysis</span>
+            </div>
+            <span class="badge-in-progress">In Progress</span>
+        </div>
+    </div>
 
     <section class="section" id="about">
         <div class="section-container">
@@ -952,10 +1072,11 @@
                         contributing to open‑source projects, writing technical blogs, or exploring the latest
                         research papers.
                     </p>
+                    <!-- #3 Animated counters -->
                     <div class="about-stats">
-                        <div class="stat-item"><h4>3+</h4><span>Years Exp.</span></div>
-                        <div class="stat-item"><h4>20+</h4><span>Projects</span></div>
-                        <div class="stat-item"><h4>5+</h4><span>Publications</span></div>
+                        <div class="stat-item"><h4><span class="counter" data-target="3">0</span>+</h4><span>Years Exp.</span></div>
+                        <div class="stat-item"><h4><span class="counter" data-target="20">0</span>+</h4><span>Projects</span></div>
+                        <div class="stat-item"><h4><span class="counter" data-target="5">0</span>+</h4><span>Publications</span></div>
                     </div>
                 </div>
             </div>
@@ -1090,6 +1211,7 @@
                     <div class="contact-detail">
                         <i class="fa-solid fa-envelope"></i> surdeep@example.com
                     </div>
+                    <!-- #9 Accessibility: aria-labels added -->
                     <div class="social-links">
                         <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
                         <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
@@ -1097,7 +1219,6 @@
                         <a href="#" aria-label="Kaggle"><i class="fa-brands fa-kaggle"></i></a>
                     </div>
                 </div>
-                <!-- Form connected to Formspree via AJAX -->
                 <form class="contact-form" id="contactForm" action="https://formspree.io/f/mojglnog" method="POST">
                     <!-- REPLACE YOUR_FORM_ID with your actual Formspree form ID -->
                     <div class="form-group">
@@ -1119,12 +1240,19 @@
         </div>
     </section>
 
-    <button class="back-to-top" id="backToTopBtn" aria-label="Back to top" title="Back to top">
-        <i class="fa-solid fa-arrow-up"></i>
-    </button>
+    <!-- #5 Scroll Progress Ring -->
+    <div class="progress-ring-container" id="progressRingContainer">
+        <svg viewBox="0 0 48 48">
+            <circle class="progress-ring-bg" cx="24" cy="24" r="20"></circle>
+            <circle class="progress-ring-fill" id="progressRingFill" cx="24" cy="24" r="20"></circle>
+        </svg>
+        <button class="progress-ring-btn" id="progressRingBtn" aria-label="Back to top">
+            <i class="fa-solid fa-arrow-up"></i>
+        </button>
+    </div>
 
     <footer class="footer">
-        <p>&copy; <span id="currentYear"></span> Surdeep Kashyap Panda.</p>
+        <p>&copy; <span id="currentYear"></span> Surdeep Kashyap Panda. Built with ❤️ and ☕.</p>
     </footer>
 
     <script>
@@ -1138,14 +1266,29 @@
             const currentYearSpan = document.getElementById('currentYear');
             const allNavLinks = document.querySelectorAll('.nav-links a');
             const html = document.documentElement;
-            const backToTopBtn = document.getElementById('backToTopBtn');
+
+            // Progress ring elements
+            const progressRingContainer = document.getElementById('progressRingContainer');
+            const progressRingFill = document.getElementById('progressRingFill');
+            const progressRingBtn = document.getElementById('progressRingBtn');
+            const ringRadius = 20;
+            const circumference = 2 * Math.PI * ringRadius;
+            progressRingFill.style.strokeDasharray = `${circumference} ${circumference}`;
+            progressRingFill.style.strokeDashoffset = circumference;
 
             if (currentYearSpan) currentYearSpan.textContent = new Date().getFullYear();
 
-            // Theme management
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            html.setAttribute('data-theme', savedTheme);
-            updateThemeIcon(savedTheme);
+            // #2 System-aware theme default
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                html.setAttribute('data-theme', savedTheme);
+                updateThemeIcon(savedTheme);
+            } else {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const initialTheme = prefersDark ? 'dark' : 'light';
+                html.setAttribute('data-theme', initialTheme);
+                updateThemeIcon(initialTheme);
+            }
 
             themeToggle.addEventListener('click', () => {
                 const current = html.getAttribute('data-theme');
@@ -1167,7 +1310,6 @@
                 hamburger.setAttribute('aria-expanded', isOpen);
                 document.body.style.overflow = isOpen ? 'hidden' : '';
             });
-
             allNavLinks.forEach(link => {
                 link.addEventListener('click', () => {
                     navLinks.classList.remove('open');
@@ -1177,21 +1319,31 @@
                 });
             });
 
-            // Navbar shadow & back-to-top button
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 30) {
+            // Scroll handling: navbar shadow & progress ring
+            function updateProgressRing() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const scrollPercent = docHeight > 0 ? scrollTop / docHeight : 0;
+                const offset = circumference - (scrollPercent * circumference);
+                progressRingFill.style.strokeDashoffset = offset;
+
+                if (scrollTop > 300) {
+                    progressRingContainer.classList.add('show');
+                } else {
+                    progressRingContainer.classList.remove('show');
+                }
+
+                if (scrollTop > 30) {
                     navbar.classList.add('scrolled');
                 } else {
                     navbar.classList.remove('scrolled');
                 }
-                if (window.scrollY > 300) {
-                    backToTopBtn.classList.add('show');
-                } else {
-                    backToTopBtn.classList.remove('show');
-                }
-            });
+            }
 
-            backToTopBtn.addEventListener('click', () => {
+            window.addEventListener('scroll', updateProgressRing, { passive: true });
+            updateProgressRing(); // initial call
+
+            progressRingBtn.addEventListener('click', () => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
 
@@ -1210,49 +1362,95 @@
             }, { rootMargin: '-40% 0px -55% 0px' });
             sections.forEach(section => navObserver.observe(section));
 
-            // ========== FORMSPREE AJAX SUBMISSION ==========
+            // #3 Counter animation
+            const counters = document.querySelectorAll('.counter');
+            const counterObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const el = entry.target;
+                        const target = parseInt(el.getAttribute('data-target'), 10);
+                        let start = 0;
+                        const duration = 1500;
+                        const increment = target / (duration / 16);
+                        function updateCounter() {
+                            start += increment;
+                            if (start < target) {
+                                el.textContent = Math.floor(start);
+                                requestAnimationFrame(updateCounter);
+                            } else {
+                                el.textContent = target;
+                            }
+                        }
+                        updateCounter();
+                        counterObserver.unobserve(el);
+                    }
+                });
+            }, { threshold: 0.5 });
+            counters.forEach(counter => counterObserver.observe(counter));
+
+            // #6 Typing effect
+            const typingElement = document.getElementById('typingText');
+            const phrases = ['Machine Learning', 'Deep Learning', 'NLP', 'Computer Vision'];
+            let phraseIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+            function typeEffect() {
+                const currentPhrase = phrases[phraseIndex];
+                if (isDeleting) {
+                    typingElement.textContent = currentPhrase.substring(0, charIndex - 1);
+                    charIndex--;
+                } else {
+                    typingElement.textContent = currentPhrase.substring(0, charIndex + 1);
+                    charIndex++;
+                }
+                if (!isDeleting && charIndex === currentPhrase.length) {
+                    isDeleting = true;
+                    setTimeout(typeEffect, 1500);
+                    return;
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    phraseIndex = (phraseIndex + 1) % phrases.length;
+                    setTimeout(typeEffect, 300);
+                    return;
+                }
+                const speed = isDeleting ? 40 : 100;
+                setTimeout(typeEffect, speed);
+            }
+            typeEffect();
+
+            // Form submission (Formspree AJAX)
             contactForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 const formData = new FormData(contactForm);
                 const data = Object.fromEntries(formData.entries());
-
-                // Basic validation
                 if (!data.name.trim() || !data.email.trim() || !data.message.trim()) {
                     showFormFeedback('Please fill in all required fields.', 'error');
                     return;
                 }
                 if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
-                    showFormFeedback('Please enter a valid email address.', 'error');
+                    showFormFeedback('Please enter a valid email.', 'error');
                     return;
                 }
-
-                // Disable button and show loading state
                 const submitBtn = contactForm.querySelector('.btn-submit');
                 const originalBtnText = submitBtn.innerHTML;
                 submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
                 submitBtn.disabled = true;
-                formFeedback.className = 'form-feedback'; // hide any previous message
-
+                formFeedback.className = 'form-feedback';
                 try {
                     const response = await fetch(contactForm.action, {
                         method: 'POST',
                         body: formData,
                         headers: { 'Accept': 'application/json' }
                     });
-
                     if (response.ok) {
                         showFormFeedback('✅ Message sent successfully! I\'ll get back to you soon.', 'success');
                         contactForm.reset();
                     } else {
                         const errorData = await response.json().catch(() => ({}));
-                        if (errorData.error) {
-                            showFormFeedback(`❌ ${errorData.error}`, 'error');
-                        } else {
-                            showFormFeedback('❌ Oops! Something went wrong. Please try again later.', 'error');
-                        }
+                        showFormFeedback(`❌ ${errorData.error || 'Something went wrong. Please try again.'}`, 'error');
                     }
                 } catch (error) {
-                    showFormFeedback('❌ Network error. Please check your connection and try again.', 'error');
+                    showFormFeedback('❌ Network error. Please check your connection.', 'error');
                 } finally {
                     submitBtn.innerHTML = originalBtnText;
                     submitBtn.disabled = false;
@@ -1262,7 +1460,6 @@
             function showFormFeedback(message, type) {
                 formFeedback.textContent = message;
                 formFeedback.className = `form-feedback ${type}`;
-                // Auto-hide after 6 seconds
                 setTimeout(() => {
                     if (formFeedback.textContent === message) {
                         formFeedback.className = 'form-feedback';
@@ -1270,18 +1467,16 @@
                 }, 6000);
             }
 
-            // ========== SCROLL-TRIGGERED FADE-IN ANIMATIONS ==========
+            // Fade-in animations on scroll
             const fadeElements = document.querySelectorAll('.fade-in-section');
             const fadeObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('is-visible');
-                        // Once visible, stop observing to avoid re-triggering
                         fadeObserver.unobserve(entry.target);
                     }
                 });
             }, { threshold: 0.15, rootMargin: '0px 0px -30px 0px' });
-
             fadeElements.forEach(el => fadeObserver.observe(el));
         })();
     </script>
