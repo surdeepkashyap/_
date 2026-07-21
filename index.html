@@ -21,8 +21,8 @@
     <meta name="twitter:description" content="Crafting intelligent solutions with machine learning and deep learning.">
     <!-- Canonical URL -->
     <link rel="canonical" href="https://surdeep.dev">
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🧠</text></svg>">
+    <!-- Favicon using logo image -->
+    <link rel="icon" type="image/png" href="images/logo.png">
     <title>Surdeep Kashyap Panda | AI/ML Engineer</title>
 
     <!-- Google Fonts -->
@@ -34,7 +34,6 @@
 
     <style>
         :root {
-            /* Light theme (default) */
             --bg-primary: #ffffff;
             --bg-secondary: #f8fafc;
             --bg-card: #ffffff;
@@ -59,7 +58,6 @@
             --nav-height: 70px;
         }
 
-        /* Dark theme override (kept for toggle) */
         [data-theme="dark"] {
             --bg-primary: #0f172a;
             --bg-secondary: #1e293b;
@@ -97,6 +95,18 @@
             -webkit-font-smoothing: antialiased;
         }
 
+        /* ===== FADE-IN ANIMATION (scroll triggered) ===== */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+            will-change: opacity, transform;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         /* Navigation */
         .navbar {
             position: fixed;
@@ -127,32 +137,19 @@
             height: 100%;
         }
         .nav-logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--text-primary);
-            text-decoration: none;
-            letter-spacing: -0.5px;
             display: flex;
             align-items: center;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--text-primary);
             gap: 8px;
-            transition: color var(--transition);
+            letter-spacing: -0.5px;
         }
-        .nav-logo .logo-dot {
-            width: 10px;
-            height: 10px;
-            background: var(--accent);
-            border-radius: 50%;
-            display: inline-block;
-            animation: pulse-dot 2s infinite;
-        }
-        @keyframes pulse-dot {
-            0%,
-            100% {
-                box-shadow: 0 0 0 0 var(--accent-glow);
-            }
-            50% {
-                box-shadow: 0 0 0 12px transparent;
-            }
+        .logo-img {
+            height: 36px;
+            width: auto;
+            object-fit: contain;
         }
         .nav-links {
             display: flex;
@@ -233,7 +230,7 @@
             transform: rotate(-45deg) translate(5px, -5px);
         }
 
-        /* Hero */
+        /* Hero (already animated with keyframes, so we don't add fade-in-section class) */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -314,6 +311,7 @@
             color: var(--accent);
             margin-bottom: 24px;
             background: rgba(56, 189, 248, 0.05);
+            animation: fadeInUp 0.6s ease-out;
         }
         .hero h1 {
             font-size: clamp(2.5rem, 6vw, 4.5rem);
@@ -321,7 +319,7 @@
             line-height: 1.1;
             letter-spacing: -1.5px;
             margin-bottom: 16px;
-            animation: fadeInUp 0.6s ease-out;
+            animation: fadeInUp 0.6s ease-out 0.1s both;
         }
         .hero h1 .highlight {
             background: linear-gradient(135deg, #38bdf8, #a78bfa, #f472b6);
@@ -345,14 +343,14 @@
             color: var(--text-secondary);
             max-width: 600px;
             margin: 0 auto 32px;
-            animation: fadeInUp 0.6s ease-out 0.1s both;
+            animation: fadeInUp 0.6s ease-out 0.2s both;
         }
         .hero-buttons {
             display: flex;
             gap: 16px;
             justify-content: center;
             flex-wrap: wrap;
-            animation: fadeInUp 0.6s ease-out 0.2s both;
+            animation: fadeInUp 0.6s ease-out 0.3s both;
         }
         .btn {
             display: inline-flex;
@@ -476,13 +474,14 @@
             width: 280px;
             height: 280px;
             border-radius: var(--radius-xl);
-            background: linear-gradient(135deg, #38bdf8, #a78bfa);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 7rem;
-            color: #fff;
+            overflow: hidden;
             box-shadow: var(--shadow-lg), 0 0 60px rgba(56, 189, 248, 0.2);
+        }
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
         .about-text h3 {
             font-size: 1.6rem;
@@ -744,8 +743,39 @@
             background: var(--accent-hover);
             box-shadow: 0 8px 20px var(--accent-glow);
         }
+        /* Form feedback messages */
+        .form-feedback {
+            margin-top: 16px;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: none;
+        }
+        .form-feedback.success {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+            display: block;
+        }
+        .form-feedback.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+            display: block;
+        }
+        [data-theme="dark"] .form-feedback.success {
+            background: #022c22;
+            color: #a7f3d0;
+            border-color: #065f46;
+        }
+        [data-theme="dark"] .form-feedback.error {
+            background: #450a0a;
+            color: #fecaca;
+            border-color: #7f1d1d;
+        }
 
-        /* ===== BACK TO TOP BUTTON ===== */
+        /* Back to top button */
         .back-to-top {
             position: fixed;
             bottom: 30px;
@@ -779,11 +809,7 @@
             transform: translateY(-4px);
         }
         [data-theme="dark"] .back-to-top {
-            background: var(--accent);
             color: #0f172a;
-        }
-        [data-theme="dark"] .back-to-top:hover {
-            background: var(--accent-hover);
         }
 
         .footer {
@@ -808,6 +834,10 @@
                 width: 44px;
                 height: 44px;
                 font-size: 1.1rem;
+            }
+            .about-image {
+                width: 220px;
+                height: 220px;
             }
         }
         @media (max-width: 768px) {
@@ -854,7 +884,10 @@
 <body>
     <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
         <div class="nav-container">
-            <a href="#home" class="nav-logo">SKP<span class="logo-dot"></span></a>
+            <a href="#home" class="nav-logo">
+                <!-- REPLACE images/logo.png WITH YOUR LOGO FILE -->
+                <img src="images/logo.png" alt="SKP Logo" class="logo-img">
+            </a>
             <ul class="nav-links" id="navLinks">
                 <li><a href="#home" class="active">Home</a></li>
                 <li><a href="#about">About</a></li>
@@ -895,14 +928,17 @@
 
     <section class="section" id="about">
         <div class="section-container">
-            <div class="section-header">
+            <div class="section-header fade-in-section">
                 <span class="section-tag">About Me</span>
                 <h2 class="section-title">The person behind the models</h2>
                 <div class="section-line"></div>
             </div>
-            <div class="about-grid">
+            <div class="about-grid fade-in-section">
                 <div class="about-image-wrapper">
-                    <div class="about-image">🧠</div>
+                    <div class="about-image">
+                        <!-- REPLACE images/photo.jpg WITH YOUR PHOTO -->
+                        <img src="images/photo.jpg" alt="Surdeep Kashyap Panda">
+                    </div>
                 </div>
                 <div class="about-text">
                     <h3>Turning data into decisions</h3>
@@ -928,37 +964,37 @@
 
     <section class="section" id="skills" style="background: var(--bg-secondary);">
         <div class="section-container">
-            <div class="section-header">
+            <div class="section-header fade-in-section">
                 <span class="section-tag">Tech Stack</span>
                 <h2 class="section-title">Tools & technologies I use</h2>
                 <div class="section-line"></div>
             </div>
             <div class="skills-grid">
-                <div class="skill-card"><i class="fa-brands fa-python"></i><h4>Python</h4></div>
-                <div class="skill-card"><i class="fa-solid fa-chart-simple"></i><h4>TensorFlow</h4></div>
-                <div class="skill-card"><i class="fa-solid fa-fire"></i><h4>PyTorch</h4></div>
-                <div class="skill-card"><i class="fa-solid fa-database"></i><h4>Scikit‑learn</h4></div>
-                <div class="skill-card"><i class="fa-solid fa-language"></i><h4>NLP</h4></div>
-                <div class="skill-card"><i class="fa-solid fa-eye"></i><h4>Computer Vision</h4></div>
-                <div class="skill-card"><i class="fa-brands fa-docker"></i><h4>Docker</h4></div>
-                <div class="skill-card"><i class="fa-brands fa-aws"></i><h4>AWS</h4></div>
-                <div class="skill-card"><i class="fa-solid fa-code"></i><h4>FastAPI</h4></div>
-                <div class="skill-card"><i class="fa-brands fa-git-alt"></i><h4>Git</h4></div>
-                <div class="skill-card"><i class="fa-solid fa-table"></i><h4>Pandas</h4></div>
-                <div class="skill-card"><i class="fa-solid fa-robot"></i><h4>MLOps</h4></div>
+                <div class="skill-card fade-in-section"><i class="fa-brands fa-python"></i><h4>Python</h4></div>
+                <div class="skill-card fade-in-section"><i class="fa-solid fa-chart-simple"></i><h4>TensorFlow</h4></div>
+                <div class="skill-card fade-in-section"><i class="fa-solid fa-fire"></i><h4>PyTorch</h4></div>
+                <div class="skill-card fade-in-section"><i class="fa-solid fa-database"></i><h4>Scikit‑learn</h4></div>
+                <div class="skill-card fade-in-section"><i class="fa-solid fa-language"></i><h4>NLP</h4></div>
+                <div class="skill-card fade-in-section"><i class="fa-solid fa-eye"></i><h4>Computer Vision</h4></div>
+                <div class="skill-card fade-in-section"><i class="fa-brands fa-docker"></i><h4>Docker</h4></div>
+                <div class="skill-card fade-in-section"><i class="fa-brands fa-aws"></i><h4>AWS</h4></div>
+                <div class="skill-card fade-in-section"><i class="fa-solid fa-code"></i><h4>FastAPI</h4></div>
+                <div class="skill-card fade-in-section"><i class="fa-brands fa-git-alt"></i><h4>Git</h4></div>
+                <div class="skill-card fade-in-section"><i class="fa-solid fa-table"></i><h4>Pandas</h4></div>
+                <div class="skill-card fade-in-section"><i class="fa-solid fa-robot"></i><h4>MLOps</h4></div>
             </div>
         </div>
     </section>
 
     <section class="section" id="projects">
         <div class="section-container">
-            <div class="section-header">
+            <div class="section-header fade-in-section">
                 <span class="section-tag">Portfolio</span>
                 <h2 class="section-title">Selected projects</h2>
                 <div class="section-line"></div>
             </div>
             <div class="projects-grid">
-                <article class="project-card">
+                <article class="project-card fade-in-section">
                     <div class="project-image"><i class="fa-solid fa-comment-dots"></i></div>
                     <div class="project-body">
                         <h3>Sentiment Analyzer API</h3>
@@ -972,7 +1008,7 @@
                         </div>
                     </div>
                 </article>
-                <article class="project-card">
+                <article class="project-card fade-in-section">
                     <div class="project-image"><i class="fa-solid fa-image"></i></div>
                     <div class="project-body">
                         <h3>Image Classifier App</h3>
@@ -986,7 +1022,7 @@
                         </div>
                     </div>
                 </article>
-                <article class="project-card">
+                <article class="project-card fade-in-section">
                     <div class="project-image"><i class="fa-solid fa-robot"></i></div>
                     <div class="project-body">
                         <h3>RAG Chatbot</h3>
@@ -1006,13 +1042,13 @@
 
     <section class="section" id="testimonials" style="background: var(--bg-secondary);">
         <div class="section-container">
-            <div class="section-header">
+            <div class="section-header fade-in-section">
                 <span class="section-tag">Testimonials</span>
                 <h2 class="section-title">What colleagues & clients say</h2>
                 <div class="section-line"></div>
             </div>
             <div class="testimonials-grid">
-                <div class="testimonial-card">
+                <div class="testimonial-card fade-in-section">
                     <div class="quote-icon"><i class="fa-solid fa-quote-right"></i></div>
                     <p>"Surdeep's ML models gave us a 30% boost in prediction accuracy. His work is rigorous and production‑ready."</p>
                     <div class="testimonial-author">
@@ -1020,7 +1056,7 @@
                         <div><strong>Anika Kumar</strong><span>Data Lead, FinTech Corp</span></div>
                     </div>
                 </div>
-                <div class="testimonial-card">
+                <div class="testimonial-card fade-in-section">
                     <div class="quote-icon"><i class="fa-solid fa-quote-right"></i></div>
                     <p>"A true AI expert. He explained complex concepts clearly and delivered the project ahead of schedule."</p>
                     <div class="testimonial-author">
@@ -1028,7 +1064,7 @@
                         <div><strong>Raj Singh</strong><span>CTO, HealthAI</span></div>
                     </div>
                 </div>
-                <div class="testimonial-card">
+                <div class="testimonial-card fade-in-section">
                     <div class="quote-icon"><i class="fa-solid fa-quote-right"></i></div>
                     <p>"Collaborating with Surdeep was a pleasure. His NLP pipeline transformed our customer support system."</p>
                     <div class="testimonial-author">
@@ -1042,12 +1078,12 @@
 
     <section class="section" id="contact">
         <div class="section-container">
-            <div class="section-header">
+            <div class="section-header fade-in-section">
                 <span class="section-tag">Contact</span>
                 <h2 class="section-title">Let's work together</h2>
                 <div class="section-line"></div>
             </div>
-            <div class="contact-wrapper">
+            <div class="contact-wrapper fade-in-section">
                 <div class="contact-info">
                     <h3>Get in touch</h3>
                     <p>I'm always open to new opportunities, collaborations, or just a friendly chat about AI.</p>
@@ -1061,7 +1097,9 @@
                         <a href="#" aria-label="Kaggle"><i class="fa-brands fa-kaggle"></i></a>
                     </div>
                 </div>
-                <form class="contact-form" id="contactForm">
+                <!-- Form connected to Formspree via AJAX -->
+                <form class="contact-form" id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                    <!-- REPLACE YOUR_FORM_ID with your actual Formspree form ID -->
                     <div class="form-group">
                         <label for="name">Full Name *</label>
                         <input type="text" id="name" name="name" placeholder="John Doe" required>
@@ -1075,12 +1113,12 @@
                         <textarea id="message" name="message" placeholder="Tell me about your project..." required></textarea>
                     </div>
                     <button type="submit" class="btn-submit"><i class="fa-solid fa-paper-plane"></i> Send Message</button>
+                    <div id="formFeedback" class="form-feedback"></div>
                 </form>
             </div>
         </div>
     </section>
 
-    <!-- Back to Top Button (floating) -->
     <button class="back-to-top" id="backToTopBtn" aria-label="Back to top" title="Back to top">
         <i class="fa-solid fa-arrow-up"></i>
     </button>
@@ -1096,6 +1134,7 @@
             const navLinks = document.getElementById('navLinks');
             const themeToggle = document.getElementById('themeToggle');
             const contactForm = document.getElementById('contactForm');
+            const formFeedback = document.getElementById('formFeedback');
             const currentYearSpan = document.getElementById('currentYear');
             const allNavLinks = document.querySelectorAll('.nav-links a');
             const html = document.documentElement;
@@ -1138,15 +1177,13 @@
                 });
             });
 
-            // Navbar shadow on scroll & back-to-top button visibility
+            // Navbar shadow & back-to-top button
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 30) {
                     navbar.classList.add('scrolled');
                 } else {
                     navbar.classList.remove('scrolled');
                 }
-
-                // Show/hide back-to-top button
                 if (window.scrollY > 300) {
                     backToTopBtn.classList.add('show');
                 } else {
@@ -1154,14 +1191,13 @@
                 }
             });
 
-            // Back to top click
             backToTopBtn.addEventListener('click', () => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
 
             // Active nav link observer
             const sections = document.querySelectorAll('section[id]');
-            const observer = new IntersectionObserver((entries) => {
+            const navObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const id = entry.target.getAttribute('id');
@@ -1172,24 +1208,81 @@
                     }
                 });
             }, { rootMargin: '-40% 0px -55% 0px' });
-            sections.forEach(section => observer.observe(section));
+            sections.forEach(section => navObserver.observe(section));
 
-            // Contact form
-            contactForm.addEventListener('submit', function(e) {
+            // ========== FORMSPREE AJAX SUBMISSION ==========
+            contactForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 const formData = new FormData(contactForm);
                 const data = Object.fromEntries(formData.entries());
+
+                // Basic validation
                 if (!data.name.trim() || !data.email.trim() || !data.message.trim()) {
-                    alert('Please fill in all required fields.');
+                    showFormFeedback('Please fill in all required fields.', 'error');
                     return;
                 }
                 if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
-                    alert('Please enter a valid email.');
+                    showFormFeedback('Please enter a valid email address.', 'error');
                     return;
                 }
-                alert('✅ Message sent! (This is a demo – connect a backend to make it functional)');
-                contactForm.reset();
+
+                // Disable button and show loading state
+                const submitBtn = contactForm.querySelector('.btn-submit');
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+                submitBtn.disabled = true;
+                formFeedback.className = 'form-feedback'; // hide any previous message
+
+                try {
+                    const response = await fetch(contactForm.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: { 'Accept': 'application/json' }
+                    });
+
+                    if (response.ok) {
+                        showFormFeedback('✅ Message sent successfully! I\'ll get back to you soon.', 'success');
+                        contactForm.reset();
+                    } else {
+                        const errorData = await response.json().catch(() => ({}));
+                        if (errorData.error) {
+                            showFormFeedback(`❌ ${errorData.error}`, 'error');
+                        } else {
+                            showFormFeedback('❌ Oops! Something went wrong. Please try again later.', 'error');
+                        }
+                    }
+                } catch (error) {
+                    showFormFeedback('❌ Network error. Please check your connection and try again.', 'error');
+                } finally {
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.disabled = false;
+                }
             });
+
+            function showFormFeedback(message, type) {
+                formFeedback.textContent = message;
+                formFeedback.className = `form-feedback ${type}`;
+                // Auto-hide after 6 seconds
+                setTimeout(() => {
+                    if (formFeedback.textContent === message) {
+                        formFeedback.className = 'form-feedback';
+                    }
+                }, 6000);
+            }
+
+            // ========== SCROLL-TRIGGERED FADE-IN ANIMATIONS ==========
+            const fadeElements = document.querySelectorAll('.fade-in-section');
+            const fadeObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        // Once visible, stop observing to avoid re-triggering
+                        fadeObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15, rootMargin: '0px 0px -30px 0px' });
+
+            fadeElements.forEach(el => fadeObserver.observe(el));
         })();
     </script>
 </body>
